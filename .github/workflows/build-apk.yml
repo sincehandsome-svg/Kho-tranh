@@ -33,7 +33,17 @@ jobs:
           mkdir -p assets
           cp icon.png assets/icon-only.png
           cp icon.png assets/icon-foreground.png
-          npx @capacitor/assets generate --android --iconBackgroundColor '#ffffff' --iconBackgroundColorDark '#111316'
+          python3 - <<'PY'
+          import zlib, struct
+          w = h = 1024
+          raw = (b'\x00' + b'\xff\xff\xff' * w) * h
+          def chunk(t, d):
+              c = struct.pack('>I', len(d)) + t + d
+              return c + struct.pack('>I', zlib.crc32(t + d) & 0xffffffff)
+          png = b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', struct.pack('>IIBBBBB', w, h, 8, 2, 0, 0, 0)) + chunk(b'IDAT', zlib.compress(raw)) + chunk(b'IEND', b'')
+          open('assets/icon-background.png', 'wb').write(png)
+          PY
+          npx @capacitor/assets generate --android
 
       - name: Build APK
         working-directory: android
