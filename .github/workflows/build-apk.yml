@@ -28,6 +28,13 @@ jobs:
           npx cap add android
           npx cap sync android
 
+      - name: Tạo icon
+        run: |
+          mkdir -p assets
+          cp icon.png assets/icon-only.png
+          cp icon.png assets/icon-foreground.png
+          npx @capacitor/assets generate --android --iconBackgroundColor '#ffffff' --iconBackgroundColorDark '#111316'
+
       - name: Build APK
         working-directory: android
         run: |
