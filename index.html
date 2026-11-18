@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kho tranh</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f5f6;--surface:#fff;--ink:#16181d;--muted:#6b717b;--line:#d6d9de;--on-ink:#fff;--danger:#b42318;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111316;--surface:#1a1d22;--ink:#eef0f2;--muted:#9097a1;--line:#2b2f36;--on-ink:#111316;--danger:#ff8a80;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111316;--surface:#1a1d22;--ink:#eef0f2;--muted:#9097a1;--line:#2b2f36;--on-ink:#111316;--danger:#ff8a80;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.5 Archivo,"Helvetica Neue",Arial,sans-serif;padding-bottom:100px}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px}
+h1{font:700 40px/1 Archivo,Arial,sans-serif;letter-spacing:-.03em;margin:28px 0 6px}
+.sub{color:var(--muted);margin:0 0 22px}
+.facts{display:flex;gap:26px;border-top:1px solid var(--ink);padding-top:12px;flex-wrap:wrap}
+.facts b{display:block;font:600 19px/1.2 Archivo,Arial,sans-serif}
+.facts span{color:var(--muted);font-size:13px}
+.tabs{display:flex;gap:24px;border-bottom:1px solid var(--line);margin-top:18px}
+.tab{background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:12px 0;font:600 16px Archivo,Arial,sans-serif;color:var(--muted);cursor:pointer}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:2px;padding:12px}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.tools{display:grid;grid-template-columns:1fr 150px;gap:10px;margin:16px 0 4px}
+.chips{display:flex;gap:18px;overflow-x:auto;padding:10px 0 16px}
+.chip{flex:none;background:none;border:0;padding:2px 0;font:500 14px Archivo,Arial,sans-serif;color:var(--muted);cursor:pointer;border-bottom:1px solid transparent}
+.chip[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:26px 14px}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr)}}
+.tile{background:none;border:0;padding:0;text-align:left;color:var(--ink);font:inherit;cursor:pointer}
+.pic{aspect-ratio:4/5;width:100%;margin-bottom:10px}
+.tile h3{font:600 16px/1.25 Archivo,Arial,sans-serif;margin:0 0 2px}
+.cap{color:var(--muted);font-size:13px;line-height:1.4}
+.st{display:inline-block;margin-top:6px;font-size:12px;font-weight:600;color:var(--muted)}
+.st.trungbay{color:var(--ink)}
+.idea{display:flex;gap:14px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:16px 0;color:var(--ink);font:inherit;cursor:pointer}
+.idea .sq{flex:none;width:52px;height:52px}
+.idea h3{font:600 18px/1.25 Archivo,Arial,sans-serif;margin:0 0 2px}
+.idea p{margin:2px 0 4px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.empty{color:var(--muted);padding:44px 0;max-width:32ch}
+.foot{margin-top:34px;text-align:center}
+.link{background:none;border:0;color:var(--muted);font:inherit;font-size:13px;text-decoration:underline;cursor:pointer}
+.bar{position:fixed;left:0;right:0;bottom:0;padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,var(--bg) 45%)}
+.bar button{display:block;margin:0 auto;max-width:680px;width:100%}
+.btn{font:600 15px Archivo,Arial,sans-serif;border:1px solid var(--ink);border-radius:2px;padding:15px;background:var(--ink);color:var(--on-ink);cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.del{background:transparent;color:var(--danger);border-color:var(--danger)}
+.ov{position:fixed;inset:0;background:rgba(10,12,16,.55);display:none;align-items:flex-end;justify-content:center;z-index:20}
+.ov.open{display:flex}
+.sheet{display:none;background:var(--bg);width:100%;max-width:720px;max-height:93%;overflow-y:auto;padding:22px 20px calc(22px + env(safe-area-inset-bottom,0px))}
+.sheet.open{display:block}
+.sheet h2{font:700 28px Archivo,Arial,sans-serif;letter-spacing:-.02em;margin:0 0 6px}
+label{display:block;font-size:13px;font-weight:500;color:var(--muted);margin:14px 0 5px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sw{display:flex;gap:10px;flex-wrap:wrap}
+.sw button{width:40px;height:40px;border:1px solid var(--line);border-radius:2px;cursor:pointer;padding:0}
+.sw button[aria-pressed="true"]{outline:2px solid var(--ink);outline-offset:2px}
+.preview{display:none;width:100%;height:200px;background-size:cover;background-position:center;margin-top:8px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.wide{grid-column:1/-1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Kho tranh</h1>
+  <p class="sub">Quản lý tác phẩm và những ý tưởng sắp thực hiện.</p>
+  <div class="facts">
+    <div><b id="sCount">0</b><span>Tác phẩm</span></div>
+    <div><b id="sIdea">0</b><span>Ý tưởng</span></div>
+    <div><b id="sValue">0</b><span>Giá trị đang giữ</span></div>
+    <div><b id="sSold">0</b><span>Đã bán</span></div>
+  </div>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-t="art">Tác phẩm</button>
+    <button class="tab" role="tab" data-t="idea">Ý tưởng</button>
+  </div>
+  <div id="artView">
+    <div class="tools">
+      <input id="search" type="search" placeholder="Tìm theo tên, tác giả, chất liệu" aria-label="Tìm tác phẩm">
+      <select id="sort" aria-label="Sắp xếp">
+        <option value="new">Mới thêm</option><option value="value">Giá trị cao</option><option value="year">Năm mới nhất</option><option value="name">Tên A–Z</option>
+      </select>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+  <div id="ideaView" hidden></div>
+  <div class="foot"><button class="link" id="bkBtn">Sao lưu hoặc khôi phục dữ liệu</button></div>
+</div>
+<div class="bar"><button class="btn" id="addBtn">Thêm tác phẩm</button></div>
+
+<div class="ov" id="ov">
+  <div class="sheet" id="artSheet" role="dialog" aria-modal="true" aria-labelledby="aTitleH">
+    <h2 id="aTitleH">Thêm tác phẩm</h2>
+    <label for="fTitle">Tên tác phẩm</label><input id="fTitle">
+    <label for="fArtist">Tác giả</label><input id="fArtist">
+    <div class="two">
+      <div><label for="fYear">Năm sáng tác</label><input id="fYear" inputmode="numeric"></div>
+      <div><label for="fSize">Kích thước (cm)</label><input id="fSize" placeholder="60 x 80"></div>
+    </div>
+    <label for="fMedium">Chất liệu</label><input id="fMedium" placeholder="Sơn dầu trên vải">
+    <div class="two">
+      <div><label for="fValue">Giá trị (₫)</label><input id="fValue" inputmode="numeric"></div>
+      <div><label for="fStatus">Trạng thái</label>
+        <select id="fStatus"><option value="suutap">Trong kho</option><option value="trungbay">Đang trưng bày</option><option value="daban">Đã bán</option></select></div>
+    </div>
+    <label for="fLoc">Vị trí lưu giữ</label><input id="fLoc" placeholder="Phòng khách, kho A, triển lãm">
+    <label for="fIdea">Ý tưởng tác phẩm</label><textarea id="fIdea" rows="3" placeholder="Cảm hứng, thông điệp, câu chuyện phía sau"></textarea>
+    <label for="fNote">Ghi chú</label><textarea id="fNote" rows="2"></textarea>
+    <label>Màu đại diện</label><div class="sw" id="aSw"></div>
+    <label for="fImg">Ảnh tác phẩm (không bắt buộc)</label><input id="fImg" type="file" accept="image/*">
+    <div class="preview" id="preview"></div>
+    <div class="actions">
+      <button class="btn ghost" data-close>Hủy</button>
+      <button class="btn" id="aSave">Lưu</button>
+      <button class="btn del wide" id="aDel" style="display:none">Xóa tác phẩm</button>
+    </div>
+  </div>
+  <div class="sheet" id="ideaSheet" role="dialog" aria-modal="true" aria-labelledby="iTitleH">
+    <h2 id="iTitleH">Thêm ý tưởng</h2>
+    <label for="iTitle">Tên ý tưởng</label><input id="iTitle">
+    <label for="iNote">Mô tả, cảm hứng, bố cục</label><textarea id="iNote" rows="5"></textarea>
+    <div class="two">
+      <div><label for="iMedium">Chất liệu dự kiến</label><input id="iMedium"></div>
+      <div><label for="iStatus">Tiến độ</label>
+        <select id="iStatus"><option value="y">Mới nảy ra</option><option value="phac">Đang phác thảo</option><option value="xong">Đã thực hiện</option></select></div>
+    </div>
+    <label>Màu chủ đạo</label><div class="sw" id="iSw"></div>
+    <div class="actions">
+      <button class="btn ghost" data-close>Hủy</button>
+      <button class="btn" id="iSave">Lưu</button>
+      <button class="btn ghost wide" id="iToArt" style="display:none">Tạo tác phẩm từ ý tưởng này</button>
+      <button class="btn del wide" id="iDel" style="display:none">Xóa ý tưởng</button>
+    </div>
+  </div>
+  <div class="sheet" id="bkSheet" role="dialog" aria-modal="true" aria-labelledby="bkH">
+    <h2 id="bkH">Sao lưu dữ liệu</h2>
+    <p class="cap">Dữ liệu chỉ lưu trong trình duyệt này. Sao chép đoạn mã dưới đây để cất giữ, hoặc dán mã đã sao lưu vào để khôi phục. Ảnh được nén nhỏ nên mã có thể khá dài.</p>
+    <textarea id="bkText" rows="8" aria-label="Mã sao lưu"></textarea>
+    <div class="actions">
+      <button class="btn ghost" id="bkCopy">Sao chép</button>
+      <button class="btn" id="bkLoad">Khôi phục từ mã</button>
+      <button class="btn ghost wide" data-close>Đóng</button>
+    </div>
+    <p class="cap" id="bkMsg"></p>
+  </div>
+</div>
+
+<script>
+var KEY='kho-tranh-app';
+var SW=['#16181d','#5b616b','#9aa0a9','#d6d9de','#3d5a80','#b5533c'];
+var ST={suutap:'Trong kho',trungbay:'Đang trưng bày',daban:'Đã bán'};
+var IS={y:'Mới nảy ra',phac:'Đang phác thảo',xong:'Đã thực hiện'};
+var SAMPLE={art:[
+ {id:'a1',title:'Chiều trên hồ',artist:'Lâm Thu Hà',year:'2019',medium:'Sơn dầu trên vải',size:'80 x 100',value:45000000,status:'trungbay',loc:'Phòng triển lãm tầng 2',note:'Trưng bày đến hết tháng 12.',idea:'Mặt hồ chuyển từ vàng sang xám xanh khi người đi bộ cuối cùng rời bờ.',sw:0,img:''},
+ {id:'a2',title:'Phố cổ mùa mưa',artist:'Đặng Quốc Việt',year:'2021',medium:'Màu nước trên giấy',size:'40 x 55',value:12000000,status:'suutap',loc:'Kho A, kệ 3',note:'',idea:'',sw:2,img:''}],
+ ideas:[{id:'i1',title:'Series ánh sáng buổi sớm',note:'Ba bức khổ vuông, cùng một ô cửa nhìn ra mái ngói, đổi giờ từ 5 đến 7 giờ sáng.',medium:'Sơn dầu',status:'phac',sw:3}]};
+var D=load(),tab='art',filter='all',q='',sortBy='new',editId=null,curSw=0,curImg='',armed=false;
+function load(){try{var r=localStorage.getItem(KEY);if(r){var d=JSON.parse(r);if(d&&d.art&&d.ideas)return d}}catch(e){}return JSON.parse(JSON.stringify(SAMPLE))}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}}
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function money(n){return new Intl.NumberFormat('vi-VN').format(n||0)+' ₫'}
+function find(a,id){return D[a].filter(function(x){return x.id===id})[0]}
+function sum(f){return D.art.filter(f).reduce(function(s,i){return s+(+i.value||0)},0)}
+function render(){
+  $('sCount').textContent=D.art.length;$('sIdea').textContent=D.ideas.length;
+  $('sValue').textContent=money(sum(function(i){return i.status!=='daban'}));
+  $('sSold').textContent=money(sum(function(i){return i.status==='daban'}));
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'),function(b){b.setAttribute('aria-selected',b.getAttribute('data-t')===tab)});
+  $('artView').hidden=tab!=='art';$('ideaView').hidden=tab!=='idea';
+  $('addBtn').textContent=tab==='art'?'Thêm tác phẩm':'Thêm ý tưởng';
+  var chips=[['all','Tất cả']].concat(Object.keys(ST).map(function(k){return[k,ST[k]]}));
+  $('chips').innerHTML=chips.map(function(c){return '<button class="chip" data-f="'+c[0]+'" aria-pressed="'+(filter===c[0])+'">'+c[1]+'</button>'}).join('');
+  var t=q.trim().toLowerCase();
+  var rows=D.art.filter(function(i){return(filter==='all'||i.status===filter)&&(!t||(i.title+' '+i.artist+' '+i.medium+' '+i.loc).toLowerCase().indexOf(t)>-1)});
+  if(sortBy==='value')rows.sort(function(a,b){return(+b.value||0)-(+a.value||0)});
+  if(sortBy==='year')rows.sort(function(a,b){return(+b.year||0)-(+a.year||0)});
+  if(sortBy==='name')rows.sort(function(a,b){return a.title.localeCompare(b.title,'vi')});
+  $('grid').innerHTML=rows.length?rows.map(function(i){
+    return '<button class="tile" data-id="'+i.id+'"><div class="pic" style="background:'+(i.img?'url('+i.img+') center/cover':SW[i.sw||0])+'"></div><h3>'+esc(i.title)+'</h3><div class="cap">'+esc(i.artist)+(i.year?', '+esc(i.year):'')+'<br>'+esc(i.medium)+(i.value?'<br>'+money(i.value):'')+'</div><span class="st '+i.status+'">'+ST[i.status]+'</span></button>'
+  }).join(''):'<div class="empty">Chưa có tác phẩm nào khớp. Bấm “Thêm tác phẩm” để bắt đầu.</div>';
+  $('ideaView').innerHTML=D.ideas.length?D.ideas.map(function(i){
+    return '<button class="idea" data-id="'+i.id+'"><div class="sq" style="background:'+SW[i.sw||0]+'"></div><div><h3>'+esc(i.title)+'</h3><p>'+esc(i.note)+'</p><span class="cap">'+IS[i.status]+(i.medium?', '+esc(i.medium):'')+'</span></div></button>'
+  }).join(''):'<div class="empty">Chưa có ý tưởng nào. Ghi lại ý tưởng đầu tiên trước khi nó trôi mất.</div>';
+}
+function swatches(el,cur,set){el.innerHTML=SW.map(function(g,i){return '<button type="button" data-s="'+i+'" style="background:'+g+'" aria-label="Màu '+(i+1)+'" aria-pressed="'+(cur===i)+'"></button>'}).join('');
+  el.onclick=function(e){var s=e.target.getAttribute('data-s');if(s!==null){set(+s);swatches(el,+s,set)}}}
+function showPrev(){var p=$('preview');if(curImg){p.style.display='block';p.style.backgroundImage='url('+curImg+')'}else p.style.display='none'}
+function show(id){['art','idea','bk'].forEach(function(k){$(k+'Sheet').classList.toggle('open',k===id)});$('ov').classList.add('open')}
+function closeSheet(){$('ov').classList.remove('open')}
+function openArt(id,pre){
+  editId=id;armed=false;var it=find('art',id)||pre||{};
+  $('aTitleH').textContent=id?'Sửa tác phẩm':'Thêm tác phẩm';
+  $('fTitle').value=it.title||'';$('fArtist').value=it.artist||'';$('fYear').value=it.year||'';$('fSize').value=it.size||'';
+  $('fMedium').value=it.medium||'';$('fValue').value=it.value||'';$('fStatus').value=it.status||'suutap';
+  $('fLoc').value=it.loc||'';$('fNote').value=it.note||'';$('fIdea').value=it.idea||'';$('fImg').value='';
+  curSw=it.sw||0;curImg=it.img||'';swatches($('aSw'),curSw,function(s){curSw=s});showPrev();
+  $('aDel').style.display=id?'block':'none';$('aDel').textContent='Xóa tác phẩm';show('art');
+}
+function openIdea(id){
+  editId=id;armed=false;var it=find('ideas',id)||{};
+  $('iTitleH').textContent=id?'Sửa ý tưởng':'Thêm ý tưởng';
+  $('iTitle').value=it.title||'';$('iNote').value=it.note||'';$('iMedium').value=it.medium||'';$('iStatus').value=it.status||'y';
+  curSw=it.sw||0;swatches($('iSw'),curSw,function(s){curSw=s});
+  $('iDel').style.display=id?'block':'none';$('iToArt').style.display=id?'block':'none';$('iDel').textContent='Xóa ý tưởng';show('idea');
+}
+$('addBtn').onclick=function(){tab==='art'?openArt(null):openIdea(null)};
+Array.prototype.forEach.call(document.querySelectorAll('[data-close]'),function(b){b.onclick=closeSheet});
+$('ov').onclick=function(e){if(e.target===$('ov'))closeSheet()};
+document.querySelector('.tabs').onclick=function(e){var t=e.target.getAttribute('data-t');if(t){tab=t;render()}};
+$('search').oninput=function(e){q=e.target.value;render()};
+$('sort').onchange=function(e){sortBy=e.target.value;render()};
+$('chips').onclick=function(e){var f=e.target.getAttribute('data-f');if(f){filter=f;render()}};
+$('grid').onclick=function(e){var c=e.target.closest('.tile');if(c)openArt(c.getAttribute('data-id'))};
+$('ideaView').onclick=function(e){var c=e.target.closest('.idea');if(c)openIdea(c.getAttribute('data-id'))};
+$('fImg').onchange=function(e){
+  var f=e.target.files[0];if(!f)return;var r=new FileReader();
+  r.onload=function(){var im=new Image();im.onload=function(){var k=Math.min(1,480/Math.max(im.width,im.height));var c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);curImg=c.toDataURL('image/jpeg',.7);showPrev()};im.src=r.result};
+  r.readAsDataURL(f);
+};
+$('aSave').onclick=function(){
+  var title=$('fTitle').value.trim();
+  if(!title){$('fTitle').focus();$('fTitle').placeholder='Nhập tên tác phẩm';return}
+  var o={id:editId||('a'+Date.now()),title:title,artist:$('fArtist').value.trim(),year:$('fYear').value.trim(),size:$('fSize').value.trim(),medium:$('fMedium').value.trim(),value:+String($('fValue').value).replace(/\D/g,'')||0,status:$('fStatus').value,loc:$('fLoc').value.trim(),note:$('fNote').value.trim(),idea:$('fIdea').value.trim(),sw:curSw,img:curImg};
+  D.art=editId?D.art.map(function(x){return x.id===editId?o:x}):[o].concat(D.art);
+  save();closeSheet();tab='art';render();
+};
+$('iSave').onclick=function(){
+  var title=$('iTitle').value.trim();
+  if(!title){$('iTitle').focus();$('iTitle').placeholder='Nhập tên ý tưởng';return}
+  var o={id:editId||('i'+Date.now()),title:title,note:$('iNote').value.trim(),medium:$('iMedium').value.trim(),status:$('iStatus').value,sw:curSw};
+  D.ideas=editId?D.ideas.map(function(x){return x.id===editId?o:x}):[o].concat(D.ideas);
+  save();closeSheet();render();
+};
+$('iToArt').onclick=function(){var it=find('ideas',editId);openArt(null,{title:it.title,medium:it.medium,idea:it.note,sw:it.sw})};
+function del(btn,key){btn.onclick=function(){
+  if(!armed){armed=true;btn.textContent='Bấm lần nữa để xóa';return}
+  D[key]=D[key].filter(function(x){return x.id!==editId});save();closeSheet();render()}}
+del($('aDel'),'art');del($('iDel'),'ideas');
+$('bkBtn').onclick=function(){$('bkText').value=JSON.stringify(D);$('bkMsg').textContent='';show('bk')};
+$('bkCopy').onclick=function(){var t=$('bkText');t.select();var ok=false;try{ok=document.execCommand('copy')}catch(e){}$('bkMsg').textContent=ok?'Đã sao chép.':'Hãy giữ và chọn “Sao chép” trên ô văn bản.'};
+$('bkLoad').onclick=function(){try{var d=JSON.parse($('bkText').value);if(!d||!Array.isArray(d.art)||!Array.isArray(d.ideas))throw 0;D=d;save();closeSheet();render()}catch(e){$('bkMsg').textContent='Mã không hợp lệ, dữ liệu hiện tại được giữ nguyên.'}};
+render();
+</script>
+</body>
+</html>
